@@ -6,7 +6,10 @@ import Ogg
 struct OggExportTests {
     @Test("Ogg swift module imported cleanly")
     func testSwiftModuleLoads() throws {
-        #expect(Bool(true), "Ogg swift module imported cleanly")
+        let cursor = ByteBufferCursor()
+        cursor.writeU32Le(v: 42)
+        cursor.setPosition(newPosition: 0)
+        #expect(cursor.readU32Le() == 42)
     }
 }
 #elseif canImport(XCTest)
@@ -15,7 +18,10 @@ import Ogg
 
 final class OggExportTests: XCTestCase {
     func testSwiftModuleLoads() throws {
-        XCTAssertTrue(true, "Ogg swift module imported cleanly")
+        let cursor = ByteBufferCursor()
+        cursor.writeU32Le(v: 42)
+        cursor.setPosition(newPosition: 0)
+        XCTAssertEqual(cursor.readU32Le(), 42)
     }
 }
 #endif
